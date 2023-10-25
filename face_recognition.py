@@ -14,14 +14,13 @@ def face_recognition(src, dataset_path: str = "./data", threshhold: float = 0.4)
         identity: 用户id
     """
     result = DeepFace.find(src, dataset_path)
-    for probabilities in result:
-        target = probabilities.iloc[0]
-        identity = os.path.basename(target['identity']).split("_")[0]
-        cosine_distance = target['VGG-Face_cosine']
-        if cosine_distance <= threshhold:
-            return True, identity
-        else:
-            return False, None
+    target = result[0].iloc[0]
+    identity = os.path.basename(target['identity']).split("_")[0]
+    cosine_distance = target['VGG-Face_cosine']
+    if cosine_distance <= threshhold:
+        return True, identity
+    else:
+        return False, None
 
 
 if __name__ == "__main__":
